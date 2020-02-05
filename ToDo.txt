@@ -1,0 +1,15 @@
+1. Parse dataset
+2. Index dataset
+3. Parse queries
+4. Run TREC_EVAL
+
+links
+
+https://www.baeldung.com/lucene
+
+https://stackoverflow.com/questions/4275825/how-to-evaluate-a-search-retrieval-engine-using-trec-eval
+https://medium.com/@naman.madan25/how-to-use-trec-eval-b59c0ef8cbf9
+
+https://github.com/jakdemir/cranfield-data-analyzer
+https://github.com/PointerFLY/Lucene-Example
+
