@@ -5,11 +5,25 @@
 
 links
 
+### Setup ###
 https://www.baeldung.com/lucene
 
-https://stackoverflow.com/questions/4275825/how-to-evaluate-a-search-retrieval-engine-using-trec-eval
-https://medium.com/@naman.madan25/how-to-use-trec-eval-b59c0ef8cbf9
-
-https://github.com/jakdemir/cranfield-data-analyzer
+### Parsing ###
 https://github.com/PointerFLY/Lucene-Example
 
+### Trec Eval ###
+(x) - https://github.com/jakdemir/cranfield-data-analyzer
+https://github.com/terrierteam/jtreceval - 3rd party library
+https://github.com/c00kiemon5ter/LuceneEval
+https://stackoverflow.com/questions/4275825/how-to-evaluate-a-search-retrieval-engine-using-trec-eval
+https://medium.com/@naman.madan25/how-to-use-trec-eval-b59c0ef8cbf9
+https://github.com/usnistgov/trec_eval
+http://curric.dlib.vt.edu/modDev/package_modules/MidtermModuleTeam5-TRECevalFinal.pdf
+http://web.archive.org/web/20100915045151/http://www.clsp.jhu.edu/ws02/preworkshop/labs/resnik/lab.html
+
+
+### Samples ###
+https://github.com/PointerFLY/Lucene-Example
+https://github.com/tominbazhakathu/LuceneSearchEngine
+https://github.com/dywalsh/ApacheLucene-Search-Engine
+https://gitlab.scss.tcd.ie/maitya/IRWS_Lucene
