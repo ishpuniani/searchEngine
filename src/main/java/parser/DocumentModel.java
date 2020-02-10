@@ -1,6 +1,6 @@
 package parser;
 
-class DocumentModel {
+public class DocumentModel {
 
     private int id;
     private String title;
@@ -8,11 +8,11 @@ class DocumentModel {
     private String source;
     private String content;
 
-    static final String ID = "id";
-    static final String TITLE = "title";
-    static final String AUTHOR = "author";
-    static final String SOURCE = "source";
-    static final String CONTENT = "content";
+    public static final String ID = "id";
+    public static final String TITLE = "title";
+    public static final String AUTHOR = "author";
+    public static final String SOURCE = "source";
+    public static final String CONTENT = "content";
 
     DocumentModel(int id, String title, String author, String source, String content) {
         this.id = id;

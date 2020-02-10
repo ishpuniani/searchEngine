@@ -14,7 +14,6 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class FileParser {
 
@@ -22,11 +21,12 @@ public class FileParser {
 
     private static final Path RESOURCE_DIR = Paths.get("src/main/resources/");
     private static final Path DOCS_DIR = RESOURCE_DIR.resolve("cran/");
-    static final Path INDEX_DIR = RESOURCE_DIR.resolve("index/");
+    public static final Path INDEX_DIR = RESOURCE_DIR.resolve("index/");
 
-    static final Path DOCS_FILE = DOCS_DIR.resolve("cran.all.1400");
-    static final Path QUERY_FILE = DOCS_DIR.resolve("cran.qry");
-    static final Path BASELINE_FILE = DOCS_DIR.resolve("cranqrel");
+    private static final Path DOCS_FILE = DOCS_DIR.resolve("cran.all.1400");
+    private static final Path QUERY_FILE = DOCS_DIR.resolve("cran.qry");
+    private static final Path BASELINE_FILE = DOCS_DIR.resolve("cranqrel");
+    public static final Path RESULTS_FILE = DOCS_DIR.resolve("results.txt");
 
 
     public static void initialize() {
@@ -50,8 +50,8 @@ public class FileParser {
         void process(DocumentModel model);
     }
 
-    public static ArrayList<DocumentModel> readDocuments() {
-        ArrayList<DocumentModel> models = new ArrayList<>();
+    public static List<DocumentModel> readDocuments() {
+        List<DocumentModel> models = new ArrayList<>();
         try {
             String text = String.join(" ", Files.readAllLines(DOCS_FILE));
             String lines[] = text.split("\\.I\\s*");
@@ -74,9 +74,9 @@ public class FileParser {
         return models;
     }
 
-    public static ArrayList<Document> getLuceneDocuments() {
-        ArrayList<Document> documents = new ArrayList<>();
-        ArrayList<DocumentModel> documentModels = readDocuments();
+    public static List<Document> getLuceneDocuments() {
+        List<Document> documents = new ArrayList<>();
+        List<DocumentModel> documentModels = readDocuments();
         documentModels.forEach(d -> documents.add(modelToLuceneDoc(d)));
 //        ArrayList<Document> documents = new ArrayList<Document>(documentModels.stream().map(d -> modelToLuceneDoc(d)).collect(Collectors.toList()));
         return documents;
@@ -100,8 +100,8 @@ public class FileParser {
         return luceneDoc;
     }
 
-    public static ArrayList<String> readQueries() {
-        ArrayList<String> queries = new ArrayList<>();
+    public static List<String> readQueries() {
+        List<String> queries = new ArrayList<>();
         try {
             String text = String.join(" ", Files.readAllLines(QUERY_FILE));
             text = text.replace("?", "");
@@ -118,8 +118,8 @@ public class FileParser {
         return queries;
     }
 
-    public static ArrayList<Set> readBaselines() {
-        ArrayList<Set> baselines = new ArrayList<>(new HashSet<>());
+    public static List<Set> readBaselines() {
+        List<Set> baselines = new ArrayList<>(new HashSet<>());
         try {
             BufferedReader reader = new BufferedReader(new FileReader(BASELINE_FILE.toFile()));
             String line = null;

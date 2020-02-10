@@ -1,7 +1,9 @@
-1. Parse dataset
-2. Index dataset
-3. Parse queries
-4. Run TREC_EVAL
+1. (x) Parse dataset
+2. () Index dataset
+3. () Query dataset
+4. () generate Result file
+5. () Run TREC_EVAL
+6. (?) Script to run all
 
 links
 
