@@ -96,7 +96,7 @@ public class Main {
         BufferedWriter writer = new BufferedWriter(new FileWriter(resultsFile.toFile()));
 
         for (TrecResult res : trecResults) {
-            String str = String.format("%d\tITER\t%d\t%f\n", res.getQid(), res.getDid(), res.getScore());
+            String str = String.format("%d\tITER\t%d\tRANK\t%f\tRUN\n", res.getQid(), res.getDid(), res.getScore());
             writer.write(str);
         }
         writer.flush();
