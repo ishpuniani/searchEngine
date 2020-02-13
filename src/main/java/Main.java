@@ -9,10 +9,17 @@ import parser.FileParser;
 import searcher.Searcher;
 import searcher.TrecResult;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +48,7 @@ public class Main {
 
         Map<String, List> documentsMap = readFiles();
         logger.log(Level.INFO, "StandardAnalyzer, BM25Similarity:: ");
-        runModel(documentsMap, new StandardAnalyzer(), new BM25Similarity());
+        runModel(documentsMap, new StandardAnalyzer(), new BM25Similarity(),"results");
 
 //        logger.log(Level.INFO, "StandardAnalyzer, ClassicSimilarity(Vector Space Model):: ");
 //        runModel(documentsMap, new StandardAnalyzer(), new ClassicSimilarity());
@@ -52,7 +59,7 @@ public class Main {
     private static Map<String, List> readFiles() {
         Map<String, List> docs = new HashMap<>();
 
-        List<Set> baselines = FileParser.readBaselines();
+        List<List<String>> baselines = FileParser.readBaselines();
         List<String> queries = FileParser.readQueries();
         List<Document> documents = FileParser.getLuceneDocuments();
 
@@ -69,7 +76,7 @@ public class Main {
      * @param similarity
      * @param documents
      */
-    private static void runModel(Map<String, List> documents, Analyzer analyzer, Similarity similarity) throws IOException {
+    private static void runModel(Map<String, List> documents, Analyzer analyzer, Similarity similarity, String resultFileName) throws IOException {
         logger.log(Level.INFO, "Running Model:- ");
 
         logger.log(Level.INFO, "Create index:- ");
@@ -85,21 +92,16 @@ public class Main {
         //String query = "what is the basic mechanism of the transonic aileron buzz .";
         //List<TrecResult> trecResults = searcher.search(query , 10);
 
+        Path resultsFile = FileParser.RESULTS_DIR.resolve(resultFileName + ".txt");
+        Path trecOutputPath = FileParser.RESULTS_DIR.resolve(resultFileName + "_trec_out" + ".txt");
+
         List<TrecResult> trecResults = searcher.searchAll(documents.get(QUERY_KEY));
-        writeTrecToFile(trecResults, FileParser.RESULTS_FILE);
+        FileParser.writeTrecToFile(trecResults, resultsFile);
         logger.log(Level.INFO, "Result Generated.");
 
+        searcher.evaluateResults(resultsFile, trecOutputPath);
+        logger.log(Level.INFO, "TREC Evaluated.");
+
         logger.log(Level.INFO, "Processed");
-    }
-
-    private static void writeTrecToFile(List<TrecResult> trecResults, Path resultsFile) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(resultsFile.toFile()));
-
-        for (TrecResult res : trecResults) {
-            String str = String.format("%d\tITER\t%d\tRANK\t%f\tRUN\n", res.getQid(), res.getDid(), res.getScore());
-            writer.write(str);
-        }
-        writer.flush();
-        writer.close();
     }
 }

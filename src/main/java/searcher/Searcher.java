@@ -12,8 +12,10 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.FSDirectory;
 import parser.DocumentModel;
+import parser.FileParser;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.logging.Logger;
 public class Searcher {
 
     private static final int NUM_TOP_HITS = 10;
+    private static final String TREC_EVAL_PATH = "/Users/dhruv/Downloads/trec_eval-9.0.7/trec_eval";
     private static Logger logger = Logger.getGlobal();
 
     private Analyzer analyzer;
@@ -103,5 +106,15 @@ public class Searcher {
             results.addAll(searchRes);
         }
         return results;
+    }
+
+    public void evaluateResults(Path resultsFile, Path trecOutputFile) throws IOException {
+        String cmd = TREC_EVAL_PATH + " " + FileParser.BASELINE_FILE.toAbsolutePath().toString() + " " + resultsFile.toAbsolutePath().toString();
+        Process proc = Runtime.getRuntime().exec(cmd);
+        InputStream stdout = proc.getInputStream();
+        FileParser.writeStdoutToFile(stdout, trecOutputFile, false);
+
+        InputStream errOut = proc.getErrorStream();
+        FileParser.writeStdoutToFile(errOut, trecOutputFile, true);
     }
 }

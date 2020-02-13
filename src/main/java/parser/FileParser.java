@@ -4,10 +4,15 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
+import searcher.TrecResult;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,13 +25,13 @@ public class FileParser {
     private static Logger logger = Logger.getGlobal();
 
     private static final Path RESOURCE_DIR = Paths.get("src/main/resources/");
-    private static final Path DOCS_DIR = RESOURCE_DIR.resolve("cran/");
+    public static final Path DOCS_DIR = RESOURCE_DIR.resolve("cran/");
     public static final Path INDEX_DIR = RESOURCE_DIR.resolve("index/");
+    public static final Path RESULTS_DIR = RESOURCE_DIR.resolve("results/");
 
     private static final Path DOCS_FILE = DOCS_DIR.resolve("cran.all.1400");
     private static final Path QUERY_FILE = DOCS_DIR.resolve("cran.qry");
-    private static final Path BASELINE_FILE = DOCS_DIR.resolve("cranqrel");
-    public static final Path RESULTS_FILE = DOCS_DIR.resolve("results.txt");
+    public static final Path BASELINE_FILE = DOCS_DIR.resolve("cranqrel");
 
 
     public static void initialize() {
@@ -118,31 +123,38 @@ public class FileParser {
         return queries;
     }
 
-    public static List<Set> readBaselines() {
-        List<Set> baselines = new ArrayList<>(new HashSet<>());
+    public static List<List<String>> readBaselines() {
+        List<List<String>> baselines = new ArrayList<>(new HashSet<>());
         try {
             BufferedReader reader = new BufferedReader(new FileReader(BASELINE_FILE.toFile()));
             String line = null;
             int oldQueryId = 1;
-            HashSet<Integer> set = new HashSet<>();
             while ((line = reader.readLine()) != null) {
                 String[] items = line.split("\\s+");
                 int queryId = Integer.parseInt(items[0]);
                 int documentId = Integer.parseInt(items[1]);
                 int relevance = Integer.parseInt(items[2]);
 
-                // New queryId starts or not
-                if (queryId != oldQueryId) {
-                    oldQueryId = queryId;
-                    baselines.add(set);
-                    set = new HashSet<>();
-                }
-                if (relevance <= 3) {
-                    set.add(documentId);
-                }
+                List<String> row = new ArrayList<>();
+                row.add(Integer.toString(queryId));
+                row.add("0");
+                row.add(Integer.toString(documentId));
+                row.add(Integer.toString(relevance));
+                baselines.add(row);
+
+
+//                // New queryId starts or not
+//                if (queryId != oldQueryId) {
+//                    oldQueryId = queryId;
+//                    baselines.add(set);
+//                    set = new HashSet<>();
+//                }
+//                if (relevance <= 3) {
+//                    set.add(documentId);
+//                }
             }
             // last queryId
-            baselines.add(set);
+            // baselines.add(row);
         } catch (IOException e) {
             e.printStackTrace();
             logger.log(Level.SEVERE, "Read baseline file failed");
@@ -150,5 +162,28 @@ public class FileParser {
         }
 
         return baselines;
+    }
+
+    public static void writeStdoutToFile(InputStream inputStream, Path outputFile, boolean append) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile.toFile(), append));
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            writer.write(line + "\n");
+        }
+        writer.flush();
+        writer.close();
+    }
+
+    public static void writeTrecToFile(List<TrecResult> trecResults, Path resultsFile) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(resultsFile.toFile()));
+
+        for (TrecResult res : trecResults) {
+            String str = String.format("%d\tITER\t%d\tRANK\t%f\tRUN\n", res.getQid(), res.getDid(), res.getScore());
+            writer.write(str);
+        }
+        writer.flush();
+        writer.close();
     }
 }
