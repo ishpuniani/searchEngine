@@ -9,22 +9,11 @@ import parser.FileParser;
 import searcher.Searcher;
 import searcher.TrecResult;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -101,6 +90,8 @@ public class Main {
 
         searcher.evaluateResults(resultsFile, trecOutputPath);
         logger.log(Level.INFO, "TREC Evaluated.");
+
+        //TODO: plot precision recall(p/r) graphs
 
         logger.log(Level.INFO, "Processed");
     }

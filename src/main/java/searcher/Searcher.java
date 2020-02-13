@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 
 public class Searcher {
 
-    private static final int NUM_TOP_HITS = 10;
-    private static final String TREC_EVAL_PATH = "/Users/dhruv/Downloads/trec_eval-9.0.7/trec_eval";
+    private static final int NUM_TOP_HITS = 50;
+    private static final String TREC_EVAL_PATH = "src/main/resources/trec_eval-9.0.7/trec_eval";
     private static Logger logger = Logger.getGlobal();
 
     private Analyzer analyzer;
@@ -110,6 +110,7 @@ public class Searcher {
 
     public void evaluateResults(Path resultsFile, Path trecOutputFile) throws IOException {
         String cmd = TREC_EVAL_PATH + " " + FileParser.BASELINE_FILE.toAbsolutePath().toString() + " " + resultsFile.toAbsolutePath().toString();
+        logger.log(Level.INFO, "cmd:: " + cmd);
         Process proc = Runtime.getRuntime().exec(cmd);
         InputStream stdout = proc.getInputStream();
         FileParser.writeStdoutToFile(stdout, trecOutputFile, false);

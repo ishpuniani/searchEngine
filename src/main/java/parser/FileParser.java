@@ -31,7 +31,8 @@ public class FileParser {
 
     private static final Path DOCS_FILE = DOCS_DIR.resolve("cran.all.1400");
     private static final Path QUERY_FILE = DOCS_DIR.resolve("cran.qry");
-    public static final Path BASELINE_FILE = DOCS_DIR.resolve("cranqrel");
+//    public static final Path BASELINE_FILE = DOCS_DIR.resolve("cranqrel");
+    public static final Path BASELINE_FILE = DOCS_DIR.resolve("QRelsCorrectedforTRECeval");
 
 
     public static void initialize() {
@@ -91,10 +92,10 @@ public class FileParser {
         Document luceneDoc = new Document();
 
         StringField id = new StringField(DocumentModel.ID, Integer.toString(document.getId()), Field.Store.YES);
-        TextField title = new TextField(DocumentModel.TITLE, document.getTitle(), Field.Store.NO);
-        TextField author = new TextField(DocumentModel.AUTHOR, document.getAuthor(), Field.Store.NO);
-        TextField source = new TextField(DocumentModel.SOURCE, document.getSource(), Field.Store.NO);
-        TextField content = new TextField(DocumentModel.CONTENT, document.getContent(), Field.Store.NO);
+        TextField title = new TextField(DocumentModel.TITLE, document.getTitle(), Field.Store.YES);
+        TextField author = new TextField(DocumentModel.AUTHOR, document.getAuthor(), Field.Store.YES);
+        TextField source = new TextField(DocumentModel.SOURCE, document.getSource(), Field.Store.YES);
+        TextField content = new TextField(DocumentModel.CONTENT, document.getContent(), Field.Store.YES);
 
         luceneDoc.add(id);
         luceneDoc.add(title);
