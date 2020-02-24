@@ -22,6 +22,7 @@ https://medium.com/@naman.madan25/how-to-use-trec-eval-b59c0ef8cbf9
 https://github.com/usnistgov/trec_eval
 http://curric.dlib.vt.edu/modDev/package_modules/MidtermModuleTeam5-TRECevalFinal.pdf
 http://web.archive.org/web/20100915045151/http://www.clsp.jhu.edu/ws02/preworkshop/labs/resnik/lab.html
+http://www.rafaelglater.com/en/post/learn-how-to-use-trec_eval-to-evaluate-your-information-retrieval-system
 
 
 ### Samples ###

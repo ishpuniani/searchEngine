@@ -108,14 +108,14 @@ public class Searcher {
         return results;
     }
 
-    public void evaluateResults(Path resultsFile, Path trecOutputFile) throws IOException {
+    public void evaluateResults(Path resultsFile, Path trecOutputFile, Path imagePath) throws IOException {
         String cmd = TREC_EVAL_PATH + " " + FileParser.BASELINE_FILE.toAbsolutePath().toString() + " " + resultsFile.toAbsolutePath().toString();
         logger.log(Level.INFO, "cmd:: " + cmd);
         Process proc = Runtime.getRuntime().exec(cmd);
         InputStream stdout = proc.getInputStream();
-        FileParser.writeStdoutToFile(stdout, trecOutputFile, false);
+        FileParser.writeStdoutToFile(stdout, trecOutputFile, false, imagePath);
 
-        InputStream errOut = proc.getErrorStream();
-        FileParser.writeStdoutToFile(errOut, trecOutputFile, true);
+        /*InputStream errOut = proc.getErrorStream();
+        FileParser.writeStdoutToFile(errOut, trecOutputFile, true);*/
     }
 }

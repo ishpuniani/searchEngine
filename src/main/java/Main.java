@@ -83,15 +83,14 @@ public class Main {
 
         Path resultsFile = FileParser.RESULTS_DIR.resolve(resultFileName + ".txt");
         Path trecOutputPath = FileParser.RESULTS_DIR.resolve(resultFileName + "_trec_out" + ".txt");
+        Path imagePath = FileParser.RESULTS_DIR.resolve(resultFileName + "_pr" + ".jpeg");
 
         List<TrecResult> trecResults = searcher.searchAll(documents.get(QUERY_KEY));
         FileParser.writeTrecToFile(trecResults, resultsFile);
         logger.log(Level.INFO, "Result Generated.");
 
-        searcher.evaluateResults(resultsFile, trecOutputPath);
+        searcher.evaluateResults(resultsFile, trecOutputPath, imagePath);
         logger.log(Level.INFO, "TREC Evaluated.");
-
-        //TODO: plot precision recall(p/r) graphs
 
         logger.log(Level.INFO, "Processed");
     }

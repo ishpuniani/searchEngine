@@ -4,10 +4,17 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 import searcher.TrecResult;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -69,7 +76,6 @@ public class FileParser {
                 Arrays.fill(items, "");
                 System.arraycopy(splits, 0, items, 0, Math.min(splits.length, 5));
                 DocumentModel model = new DocumentModel(Integer.parseInt(items[0]), items[1], items[2], items[3], items[4]);
-                //processor.process(model);
                 models.add(model);
             }
         } catch (IOException e) {
@@ -129,7 +135,6 @@ public class FileParser {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(BASELINE_FILE.toFile()));
             String line = null;
-            int oldQueryId = 1;
             while ((line = reader.readLine()) != null) {
                 String[] items = line.split("\\s+");
                 int queryId = Integer.parseInt(items[0]);
@@ -142,20 +147,7 @@ public class FileParser {
                 row.add(Integer.toString(documentId));
                 row.add(Integer.toString(relevance));
                 baselines.add(row);
-
-
-//                // New queryId starts or not
-//                if (queryId != oldQueryId) {
-//                    oldQueryId = queryId;
-//                    baselines.add(set);
-//                    set = new HashSet<>();
-//                }
-//                if (relevance <= 3) {
-//                    set.add(documentId);
-//                }
             }
-            // last queryId
-            // baselines.add(row);
         } catch (IOException e) {
             e.printStackTrace();
             logger.log(Level.SEVERE, "Read baseline file failed");
@@ -165,16 +157,45 @@ public class FileParser {
         return baselines;
     }
 
-    public static void writeStdoutToFile(InputStream inputStream, Path outputFile, boolean append) throws IOException {
+    /**
+     * Write trec eval results to file and plot precision-recall graph
+     * @param inputStream
+     * @param outputFile
+     * @param append
+     * @throws IOException
+     */
+    public static void writeStdoutToFile(InputStream inputStream, Path outputFile, boolean append, Path imagePath) throws IOException {
+        XYSeries prSeries = new XYSeries("PR");
         BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile.toFile(), append));
-
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line;
         while ((line = reader.readLine()) != null) {
+            if(line.contains("iprec_at_recall")) {
+                String prLine = line;
+                String[] prArr = prLine.split("\t");
+                double x = Double.parseDouble(prArr[0].trim().split("_")[3]);
+                double y = Double.parseDouble(prArr[2].trim());
+                prSeries.add(x, y);
+            }
             writer.write(line + "\n");
         }
         writer.flush();
         writer.close();
+
+        final XYSeriesCollection dataset = new XYSeriesCollection( );
+        dataset.addSeries(prSeries);
+
+        JFreeChart xylineChart = ChartFactory.createXYLineChart(
+                "P/R Graph",
+                "Recall",
+                "Precision",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true, true, false);
+
+        int width = 640;
+        int height = 480;
+        ChartUtilities.saveChartAsJPEG(imagePath.toFile(), xylineChart, width, height);
     }
 
     public static void writeTrecToFile(List<TrecResult> trecResults, Path resultsFile) throws IOException {

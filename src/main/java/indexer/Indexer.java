@@ -7,7 +7,6 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import parser.FileParser;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -42,6 +41,7 @@ public class Indexer {
             IndexWriter writer = new IndexWriter(dir, config);
             writer.addDocuments(documentList);
             writer.close();
+            dir.close();
         } catch (IOException e) {
             e.printStackTrace();
             logger.log(Level.SEVERE, "Index failed: " + e.toString());
