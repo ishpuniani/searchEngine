@@ -1,3 +1,4 @@
+import indexer.CustomAnalyzer;
 import indexer.Indexer;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharArraySet;
@@ -55,8 +56,11 @@ public class Main {
         FileParser.initialize();
 
         Map<String, List> documentsMap = readFiles();
+        /*logger.log(Level.INFO, "StandardAnalyzer, BM25Similarity:: ");
+        runModel(documentsMap, new StandardAnalyzer(stopWords2), new BM25Similarity(),"bm25_stop2", 50);*/
+
         logger.log(Level.INFO, "StandardAnalyzer, BM25Similarity:: ");
-        runModel(documentsMap, new StandardAnalyzer(stopWords2), new BM25Similarity(),"bm25_stop2", 50);
+        runModel(documentsMap, new CustomAnalyzer(), new BM25Similarity(),"bm25_custom", 50);
 
 //        logger.log(Level.INFO, "StandardAnalyzer, ClassicSimilarity(Vector Space Model):: ");
 //        runModel(documentsMap, new StandardAnalyzer(stopWords2), new ClassicSimilarity(), "classic_stop2" ,50);
