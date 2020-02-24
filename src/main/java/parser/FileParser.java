@@ -47,7 +47,7 @@ public class FileParser {
         createDirectory(DOCS_DIR);
     }
 
-    private static void createDirectory(Path path) {
+    public static void createDirectory(Path path) {
         if (Files.notExists(path)) {
             try {
                 Files.createDirectories(path);
@@ -191,7 +191,7 @@ public class FileParser {
                 "Precision",
                 dataset,
                 PlotOrientation.VERTICAL,
-                true, true, false);
+                false, false, false);
 
         int width = 640;
         int height = 480;

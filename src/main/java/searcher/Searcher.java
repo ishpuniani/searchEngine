@@ -97,11 +97,11 @@ public class Searcher {
         return trecResults;
     }
 
-    public List<TrecResult> searchAll(List<String> queries) {
+    public List<TrecResult> searchAll(List<String> queries, int hits) {
         List<TrecResult> results = new ArrayList<>();
         for (int i = 0; i < queries.size(); i++) {
             int qNum = i + 1;
-            List<TrecResult> searchRes = search(queries.get(i), NUM_TOP_HITS);
+            List<TrecResult> searchRes = search(queries.get(i), hits);
             searchRes.forEach(t -> t.setQid(qNum));
             results.addAll(searchRes);
         }
