@@ -69,6 +69,7 @@ public class Searcher {
     public List<TrecResult> search(String queryStr, int topHitsCount) {
         List<TrecResult> trecResults = new ArrayList<>();
         String fields[] = new String[] { DocumentModel.TITLE, DocumentModel.AUTHOR, DocumentModel.SOURCE, DocumentModel.CONTENT };
+//        QueryParser parser = new QueryParser(DocumentModel.CONTENT, analyzer);
         QueryParser parser = new MultiFieldQueryParser(fields, analyzer);
 
         try {
