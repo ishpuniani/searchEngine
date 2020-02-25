@@ -1,7 +1,9 @@
 import indexer.CustomAnalyzer;
 import indexer.Indexer;
+import indexer.OpenNLPAnalyzer;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharArraySet;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.similarities.BM25Similarity;
@@ -62,6 +64,12 @@ public class Main {
 
         logger.log(Level.INFO, "CustomAnalyzer, BM25Similarity:: ");
         runModel(documentsMap, new CustomAnalyzer(), new BM25Similarity(),"results_final", 50);
+
+//        logger.log(Level.INFO, "OpenNLPAnalyzer, BM25Similarity:: ");
+//        runModel(documentsMap, new OpenNLPAnalyzer(), new BM25Similarity(),"bm25_openNlp", 50);
+
+//        logger.log(Level.INFO, "EnglishAnalyzer, BM25Similarity:: ");
+//        runModel(documentsMap, new EnglishAnalyzer(), new BM25Similarity(),"bm25_eng", 50);
 
 //        logger.log(Level.INFO, "CustomAnalyzer, BM25Similarity:: ");
 //        runModel(documentsMap, new CustomAnalyzer(), new BM25Similarity(),"bm25_custom_singleSearch", 50);
