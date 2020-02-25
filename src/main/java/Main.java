@@ -61,7 +61,7 @@ public class Main {
         runModel(documentsMap, new StandardAnalyzer(stopWords2), new BM25Similarity(),"bm25_stop2", 50);*/
 
         logger.log(Level.INFO, "CustomAnalyzer, BM25Similarity:: ");
-        runModel(documentsMap, new CustomAnalyzer(), new BM25Similarity(),"bm25_custom", 50);
+        runModel(documentsMap, new CustomAnalyzer(), new BM25Similarity(),"bm25_customStop_50", 50);
 
 //        logger.log(Level.INFO, "CustomAnalyzer, BM25Similarity:: ");
 //        runModel(documentsMap, new CustomAnalyzer(), new BM25Similarity(),"bm25_custom_singleSearch", 50);
