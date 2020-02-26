@@ -50,7 +50,6 @@ public class OpenNLPAnalyzer extends Analyzer {
             TokenStream tokenStream = new LowerCaseFilter(source);
             tokenStream = new StopFilter(tokenStream, CustomAnalyzer.stopWords);
             tokenStream = new EnglishPossessiveFilter(tokenStream); // removes trailing 's'
-            tokenStream = new EnglishMinimalStemFilter(tokenStream);
             tokenStream = new OpenNLPPOSFilter(tokenStream, posTaggerOp);
 
             return new TokenStreamComponents(source, tokenStream);
