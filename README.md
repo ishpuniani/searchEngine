@@ -18,6 +18,4 @@ Project path : `/home/ta/searchEngine`
 
 4. To evaluate : 
 
-From the Project Path
-
-`src/main/resources/trec_eval-9.0.7/trec_eval src/main/resources/cran/QRelsCorrectedforTRECeval src/main/resources/results/results_final/results.txt`
+`/home/ta/trec_eval-9.0.7/trec_eval /home/ta/QRelsCorrectedforTRECeval /home/ta/searchEngine/src/main/resources/results/results_final/results.txt`
