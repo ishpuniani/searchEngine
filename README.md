@@ -3,7 +3,7 @@ Information Retrieval Assignment - Dhruv Ishpuniani, 19310617
 
 ### Steps to run:
 
-Project path : /home/ta/searchEngine`
+Project path : `/home/ta/searchEngine`
 
 1. Build the project: `mvn clean install`
 
